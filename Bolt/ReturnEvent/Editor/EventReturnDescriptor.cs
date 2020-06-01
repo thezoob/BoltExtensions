@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A descriptor that assigns the EventReturns icon.
+    /// </summary>
     [Descriptor(typeof(EventReturn))]
     public class EventReturnDescriptor : UnitDescriptor<EventReturn>
     {

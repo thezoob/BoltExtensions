@@ -7,6 +7,9 @@ using UnityEditor;
 
 namespace Lasm.BoltExtensions.IO
 {
+    /// <summary>
+    /// A descriptor for a Save Binary Variable Unit. Sets the port names properly.
+    /// </summary>
     [Descriptor(typeof(SaveBinaryVariables))]
     public class SaveBinaryVariableDescriptor : BinarySaveUnitDescriptor
     {

@@ -5,6 +5,9 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The descriptor that sets the icon for Create Array.
+    /// </summary>
     [Descriptor(typeof(CreateArray))]
     public class CreateArrayDescriptor : UnitDescriptor<CreateArray>
     {

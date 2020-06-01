@@ -5,20 +5,46 @@ using Lasm.OdinSerializer;
 
 namespace Lasm.BoltExtensions.IO
 {
+    /// <summary>
+    /// Deletes a Binary Save file from a path.
+    /// </summary>
     [UnitCategory("IO")]
     [UnitTitle("Delete Save")]
+    [RenamedFrom("Lasm.BoltExtensions.IO.DeleteBinarySave")]
     public class DeleteBinarySave : BinarySaveUnit
     {
+        /// <summary>
+        /// Uses the OS application path (Persistant Data Path) if true.
+        /// </summary>
         [Serialize]
         [Inspectable]
         [InspectorToggleLeft]
         public bool usePersistantDataPath = true;
+
         [OdinSerialize]
-        public bool isInit;
+        private bool isInit;
+
+        /// <summary>
+        /// The Value Input port for a custom path. Shown only when usePersistantDataPath is false.
+        /// </summary>
         [DoNotSerialize]
-        public ValueInput path, fileName;
+        public ValueInput path;
+
+        /// <summary>
+        /// The filename and file extension of this save.
+        /// </summary>
+        [DoNotSerialize]
+        public ValueInput fileName;
+
+        /// <summary>
+        /// The Control Input port to enter when you want to delete the save.
+        /// </summary>
         [DoNotSerialize]
         public ControlInput delete;
+
+        /// <summary>
+        /// The Control Output port invoked when deleting is complete.
+        /// </summary>
         [DoNotSerialize]
         public ControlOutput complete;
 

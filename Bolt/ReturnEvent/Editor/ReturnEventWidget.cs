@@ -3,6 +3,9 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The visuals for the ReturnEvent Unit.
+    /// </summary>
     [Widget(typeof(ReturnEvent))]
     public class ReturnEventWidget : UnitWidget<ReturnEvent>
     {
@@ -10,6 +13,9 @@ namespace Lasm.BoltExtensions
         {
         }
 
+        /// <summary>
+        /// Sets the color of the ReturnEvent Unit to green.
+        /// </summary>
         protected override NodeColorMix baseColor => NodeColor.Green;
     }
 }

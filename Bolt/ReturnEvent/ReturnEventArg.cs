@@ -1,5 +1,8 @@
 ﻿namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The arguments for matching events and the trigger.
+    /// </summary>
     public struct ReturnEventArg
     {
         public readonly TriggerReturnEvent trigger;

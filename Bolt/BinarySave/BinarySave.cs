@@ -8,14 +8,29 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Collections.Generic;
 
-namespace Lasm.BoltExtensions.IO
+namespace Lasm.BoltExtensions
 {
-    [Serializable]
-    public class BinarySave
+    /// <summary>
+    /// The underlying type of the Binary Save system. This is the type that will be saved and loaded with all the data you assigned.
+    /// </summary>
+    [Serializable][RenamedFrom("Lasm.BoltExtensions.IO.BinarySave")]
+    public sealed class BinarySave
     {
-        public Dictionary<string, object> saves = new Dictionary<string, object>();
-        public int Count => saves.Count;
+        /// <summary>
+        /// All the save variables.
+        /// </summary>
+        [RenamedFrom("Lasm.BoltExtensions.IO.saves")]
+        public Dictionary<string, object> variables = new Dictionary<string, object>();
 
+        /// <summary>
+        /// The amount of saved variables in this save.
+        /// </summary>
+        public int Count => variables.Count;
+
+        /// <summary>
+        /// Load a binary save from a given path.
+        /// </summary>
+        /// <param name="path"></param>
         public static BinarySave Load(string path)
         {
             if (File.Exists(path))
@@ -29,6 +44,9 @@ namespace Lasm.BoltExtensions.IO
             return null;
         }
 
+        /// <summary>
+        /// Save a binary save to a file path.
+        /// </summary>
         public static void Save(string path, BinarySave binary)
         {
             string filelessPath = string.Empty;
@@ -49,35 +67,51 @@ namespace Lasm.BoltExtensions.IO
             }
         }
 
+        /// <summary>
+        /// Attempt to delete a file.
+        /// </summary>
         public static void Delete(string path)
         {
-            File.Delete(path);
+            if (File.Exists(path)) File.Delete(path);
         }
 
+
+        /// <summary>
+        /// Get a variable from this Binary Save.
+        /// </summary>
         public object Get(string name)
         {
-            return saves[name];
+            return variables[name];
         }
 
+        /// <summary>
+        /// Checks if this Binary Save has a variable.
+        /// </summary>
         public bool Has(string name)
         {
-            return saves.ContainsKey(name);
+            return variables.ContainsKey(name);
         }
 
+        /// <summary>
+        /// Removes a variable from the Binary Save.
+        /// </summary>
         public void Remove(string name)
         {
-            saves.Remove(name);
+            variables.Remove(name);
         }
 
+        /// <summary>
+        /// Sets a value of a Binary Save variable.
+        /// </summary>
         public void Set(string name, object value)
         {
-            if (saves.ContainsKey(name))
+            if (variables.ContainsKey(name))
             {
-                saves[name] = value;
+                variables[name] = value;
             }
             else
             {
-                saves.Add(name, value);
+                variables.Add(name, value);
             }
         }
     }

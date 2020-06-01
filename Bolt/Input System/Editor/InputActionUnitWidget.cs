@@ -9,6 +9,9 @@ using UnityEngine.InputSystem;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The visuals and visual behaviour of the InputActionUnit.
+    /// </summary>
     [Widget(typeof(OnInputActionUnit))]
     public class InputActionUnitWidget : UnitWidget<OnInputActionUnit>
     {
@@ -16,10 +19,19 @@ namespace Lasm.BoltExtensions
         {
         }
 
+        /// <summary>
+        /// Changes the unit color to green.
+        /// </summary>
         protected override NodeColorMix baseColor => NodeColor.Green;
 
+        /// <summary>
+        /// Allow the extra header GUI to be shown.
+        /// </summary>
         protected override bool showHeaderAddon => true;
 
+        /// <summary>
+        /// Draws the buttons and sets the data on the Unit.
+        /// </summary>
         protected override void DrawHeaderAddon()
         {
             base.DrawHeaderAddon();
@@ -59,6 +71,9 @@ namespace Lasm.BoltExtensions
             }
         }
 
+        /// <summary>
+        /// Sets the extra header addons height.
+        /// </summary>
         protected override float GetHeaderAddonHeight(float width)
         {
             return base.GetHeaderAddonHeight(width) + (unit.asset == null ? 0 : 18);

@@ -6,23 +6,40 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// Create a new multi dimensional array.
+    /// </summary>
     [TypeIcon(typeof(object[]))]
     [UnitCategory("Collections/Multi Array")]
     public class CreateArray : Unit
     {
         [Serialize]
         private int _dimensions = 2;
+        /// <summary>
+        /// The amount of dimensions we want this array to have.
+        /// </summary>
         [Inspectable][UnitHeaderInspectable("Dimensions")]
         public int dimensions
         {
             get { return _dimensions; } set { _dimensions = Mathf.Clamp(value, 1, 32); }
         }
 
+        /// <summary>
+        /// The type of this array.
+        /// </summary>
         [Serialize]
         [Inspectable][UnitHeaderInspectable("Type")]
         public System.Type type;
+
+        /// <summary>
+        /// The Value Inputs of each dimensions length.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueInput> indexes = new List<ValueInput>();
+
+        /// <summary>
+        /// The Value Ouput that returns the newly created array.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput list;
 
@@ -51,6 +68,9 @@ namespace Lasm.BoltExtensions
             return MakeArrayType(dimensions, lengths);
         }
 
+        /// <summary>
+        /// Creates an array manually to get over AOT problems.
+        /// </summary>
         public System.Array MakeArrayType(int dimensions, List<int> lengths)
         {
             switch (dimensions)

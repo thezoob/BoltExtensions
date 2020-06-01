@@ -1,17 +1,36 @@
 ﻿using Ludiq;
 using Bolt;
 
-namespace Lasm.BoltExtensions.IO
+namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A Unit that removes a variabke from a BinarySave.
+    /// </summary>
     [UnitCategory("IO")]
-    public class RemoveBinaryVariable : BinarySaveUnit
+    [RenamedFrom("Lasm.BoltExtensions.IO.RemoveBinaryVariable")]
+    public sealed class RemoveBinaryVariable : BinarySaveUnit
     {
+        /// <summary>
+        /// The Control Input port we enter when we want to remove a variable.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden]
         public ControlInput enter;
+
+        /// <summary>
+        /// The Control Output port invoked when removing the variable is complete.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden]
         public ControlOutput exit;
+
+        /// <summary>
+        /// The Value Input port for the instance of the Binary Save we are removing the variable from.
+        /// </summary>
         [DoNotSerialize]
         public ValueInput binary;
+
+        /// <summary>
+        /// The name of the variable.
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         public ValueInput variableName;

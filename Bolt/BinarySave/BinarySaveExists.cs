@@ -4,24 +4,56 @@ using Bolt;
 using Lasm.OdinSerializer;
 using System.IO;
 
-namespace Lasm.BoltExtensions.IO
+namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A Unit that checks if a Binary Save exists in the chosen path.
+    /// </summary>
     [UnitCategory("IO")]
     [UnitTitle("Binary Exists")]
-    public class BinarySaveExists : BinarySaveUnit
+    [RenamedFrom("Lasm.BoltExtensions.IO.BinarySaveExists")]
+    public sealed class BinarySaveExists : BinarySaveUnit
     {
+        /// <summary>
+        /// Uses the OS application path (Persistant Data Path) if true.
+        /// </summary>
         [Serialize]
         [Inspectable]
         [InspectorToggleLeft]
         public bool usePersistantDataPath = true;
+
         [OdinSerialize]
-        public bool isInit;
+        private bool isInit;
+
+        /// <summary>
+        /// The Value Input port for a custom path. Shown only when usePersistantDataPath is false.
+        /// </summary>
         [DoNotSerialize]
-        public ValueInput path, fileName;
+        public ValueInput path;
+
+        /// <summary>
+        /// The filename and file extension of this save.
+        /// </summary>
+        [DoNotSerialize]
+        public ValueInput fileName;
+
+        /// <summary>
+        /// The input to enter when we want to check if this save exists.
+        /// </summary>
         [DoNotSerialize]
         public ControlInput check;
+
+        /// <summary>
+        /// The output control that is invoked when the save does exist.
+        /// </summary>
         [DoNotSerialize]
-        public ControlOutput @true, @false;
+        public ControlOutput @true;
+
+        /// <summary>
+        /// The output control that is invoked when the save does not exist.
+        /// </summary>
+        [DoNotSerialize]
+        public ControlOutput @false;
 
         public override void AfterAdd()
         {
@@ -50,6 +82,9 @@ namespace Lasm.BoltExtensions.IO
             Succession(check, @false);
         }
 
+        /// <summary>
+        /// The method executed upon the Check port being entered. Checks if the save exists at path and filename.
+        /// </summary>>
         public ControlOutput SaveExists(Flow flow)
         {
             if (File.Exists((usePersistantDataPath) ? Application.persistentDataPath + "/data/" + flow.GetValue<string>(fileName) : flow.GetValue<string>(path) + "/" + flow.GetValue<string>(fileName)))

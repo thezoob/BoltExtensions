@@ -3,21 +3,41 @@ using UnityEngine;
 using Ludiq;
 using Bolt;
 
-namespace Lasm.BoltExtensions.IO
+namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A Unit for creating a new Binary Save.
+    /// </summary>
     [UnitTitle("Create Binary")]
     [UnitCategory("IO")]
-    public class CreateBinarySave : BinarySaveUnit
+    [RenamedFrom("Lasm.BoltExtensions.IO.CreateBinarySave")]
+    public sealed class CreateBinarySave : BinarySaveUnit
     {
         [Serialize]
         private int _count;
+
+        /// <summary>
+        /// The amount of variables to initialize with.
+        /// </summary>
         [Inspectable]
         [UnitHeaderInspectable("Count")]
         public int count { get { return _count; } set { _count = Mathf.Clamp(value, 0, 100); } }
+
+        /// <summary>
+        /// The newly created BinarySave.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput binarySave;
+
+        /// <summary>
+        /// Value Input ports for the names of the initialized variables.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueInput> names = new List<ValueInput>();
+
+        /// <summary>
+        /// Value Input ports for the values of the initialized variables.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueInput> values = new List<ValueInput>();
 
@@ -47,11 +67,10 @@ namespace Lasm.BoltExtensions.IO
 
             for (int i = 0; i < count; i++)
             {
-                binary.saves.Add(flow.GetValue<string>(names[i]), flow.GetValue<object>(values[i]));
+                binary.variables.Add(flow.GetValue<string>(names[i]), flow.GetValue<object>(values[i]));
             }
 
             return binary;
         }
     }
-
 }

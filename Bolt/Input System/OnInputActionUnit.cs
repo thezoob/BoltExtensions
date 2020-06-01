@@ -10,39 +10,69 @@ using UnityEngine.InputSystem;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The Event Unit for player input with the new Unity Input System.
+    /// </summary>
     [TypeIcon(typeof(OnButtonInput))]
     [UnitTitle("On Input Action")]
     [UnitCategory("Events/Input/Input System")]
     public class OnInputActionUnit : ManualEventUnit<NullInputEventArgs>
     {
+        /// <summary>
+        /// Overrides the hook name that the Event Bus calls to decipher different event types.
+        /// </summary>
         protected override string hookName => "OnInputAction";
 
+        /// <summary>
+        /// The Value Input for the PlayerInput.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden]
-        [NullMeansSelf]
-        public ValueInput actions;
+        [NullMeansSelf][RenamedFrom("Lasm.BoltExtensions.actions")]
+        public ValueInput player;
 
+        /// <summary>
+        /// The current value of the stick, button, or key being pressed.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput value;
 
+        /// <summary>
+        /// The Control Output invoked when the action is performed.
+        /// </summary>
         [DoNotSerialize]
         public ControlOutput performed;
 
+        /// <summary>
+        /// The asset that contains the actions we are using.
+        /// </summary>
         [UnitHeaderInspectable]
         [Inspectable]
         public InputActionAsset asset;
 
+        /// <summary>
+        /// How we handle the behaviour of this action. Is the stick, button, or key being pressed, was it just pressed, or was it just released?
+        /// </summary>
         [UnitHeaderInspectable]
         [Inspectable]
         public InputActionStatus status;
 
+        /// <summary>
+        /// The action to check we are performing.
+        /// </summary>
         [OdinSerialize]
         public InputAction action;
 
+        /// <summary>
+        /// The map that was chosen, that belongs to the current action. Used internally for editor purposes.
+        /// </summary>
         [OdinSerialize]
         public InputActionMap map;
 
         private Action<InputAction.CallbackContext> act;
 
+        /// <summary>
+        /// The id of this action to be performed.
+        /// </summary>
         public int actionId;
 
         private object lastValue;
@@ -59,7 +89,7 @@ namespace Lasm.BoltExtensions
         {
             base.Definition();
 
-            actions = ValueInput<PlayerInput>("actions", null).NullMeansSelf();
+            player = ValueInput<PlayerInput>("actions", null).NullMeansSelf();
 
             if (action != null)
             {
@@ -96,11 +126,14 @@ namespace Lasm.BoltExtensions
             }
         }
 
+        /// <summary>
+        /// Subscribes Pressed() to the actions performed delegate, and Released() to the actions canceled delegate.
+        /// </summary>
         public override void StartListening(GraphStack stack)
         {
             reference = stack.AsReference();
             var flow = Flow.New(reference);
-            playerInput = flow.GetValue<PlayerInput>(actions);
+            playerInput = flow.GetValue<PlayerInput>(player);
 
             if (playerInput == null) playerInput = stack.self.GetComponent<PlayerInput>();
 
@@ -255,6 +288,10 @@ namespace Lasm.BoltExtensions
             }
         }
 
+        /// <summary>
+        /// Unsubscribes Pressed() from the actions performed delegate, and Released() from the actions canceled delegate.
+        /// </summary>
+        /// <param name="stack"></param>
         public override void StopListening(GraphStack stack)
         {
             if (playerInput != null)
@@ -265,6 +302,9 @@ namespace Lasm.BoltExtensions
         }
     }
 
+    /// <summary>
+    /// The actions status type. How the action is being used.
+    /// </summary>
     public enum InputActionStatus
     {
         Pressed,

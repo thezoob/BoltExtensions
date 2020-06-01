@@ -6,6 +6,9 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The Event that starts some logic before return back flow and a value.
+    /// </summary>
     [UnitCategory("Events")]
     public class ReturnEvent : GlobalEventUnit<ReturnEventArg>
     {
@@ -48,6 +51,9 @@ namespace Lasm.BoltExtensions
             }
         }
 
+        /// <summary>
+        /// Weither or not the event is able to trigger.
+        /// </summary>
         protected override bool ShouldTrigger(Flow flow, ReturnEventArg args)
         {
             bool should = flow.GetValue<string>(name) == args.name;
@@ -67,6 +73,9 @@ namespace Lasm.BoltExtensions
             return false;
         }
 
+        /// <summary>
+        /// Sets the values of all arguments when triggered.
+        /// </summary>
         protected override void AssignArguments(Flow flow, ReturnEventArg args)
         {
             flow.SetValue(eventData, new ReturnEventData(args));
@@ -77,6 +86,14 @@ namespace Lasm.BoltExtensions
             }
         }
 
+        /// <summary>
+        /// Trigger the return event. This is meant for internal use of the trigger unit.
+        /// </summary>
+        /// <param name="trigger">The trigger unit we will return to when it hits a return unit.</param>
+        /// <param name="target">The gameobject target of the event</param>
+        /// <param name="name">The name of the event.</param>
+        /// <param name="global">Is the event global to all Return Events? Will ignore the target GameObject. Target can be null in this case.</param>
+        /// <param name="args">The arguments to send through.</param>
         public static void Trigger(TriggerReturnEvent trigger, GameObject target, string name, bool global = false, params object[] args)
         {
             EventBus.Trigger<ReturnEventArg>("Return", new ReturnEventArg(trigger, target, name, global, args));

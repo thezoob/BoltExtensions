@@ -3,6 +3,9 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The visuals for the TriggerReturnEvent Unit.
+    /// </summary>
     [Widget(typeof(TriggerReturnEvent))]
     public class TriggerReturnEventWidget : UnitWidget<TriggerReturnEvent>
     {
@@ -10,6 +13,9 @@ namespace Lasm.BoltExtensions
         {
         }
 
+        /// <summary>
+        /// Sets the TriggerReturnEvent Units color to gray. Since it is an even unit under the hood, we need to make it look like it is not.
+        /// </summary>
         protected override NodeColorMix baseColor => NodeColor.Gray;
     }
 }

@@ -6,11 +6,18 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// Gets an item from a multidimensional array.
+    /// </summary>
     [UnitCategory("Collections/Multi Array")]
     public class GetArrayItem : Unit
     {
         [Serialize]
         private int _dimensions = 1;
+
+        /// <summary>
+        /// Sets the dimensions on this unit, that an array has.
+        /// </summary>
         [Inspectable]
         [UnitHeaderInspectable("Dimensions")]
         public int dimensions
@@ -19,10 +26,21 @@ namespace Lasm.BoltExtensions
             set { _dimensions = Mathf.Clamp(value, 1, 32); }
         }
 
+        /// <summary>
+        /// The target array to get the item from.
+        /// </summary>
         [DoNotSerialize]
         public ValueInput array;
+
+        /// <summary>
+        /// The Value Inputs of each dimensions length.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueInput> indexes = new List<ValueInput>();
+
+        /// <summary>
+        /// The value of the desired selection of dimensions.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput value;
 

@@ -4,17 +4,33 @@ using UnityEngine;
 using Ludiq;
 using Bolt;
 
-namespace Lasm.BoltExtensions.IO
+namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A Unit that sets a variable value of a BinarySave instance.
+    /// </summary>
     [UnitCategory("IO")]
-    public class GetBinaryVariable : BinarySaveUnit
+    [RenamedFrom("Lasm.BoltExtensions.IO.GetBinaryVariable")]
+    public sealed class GetBinaryVariable : BinarySaveUnit
     {
+        /// <summary>
+        /// The Value Input port for the instance of the Binary Save we are getting the variable of.
+        /// </summary>
         [DoNotSerialize]
         public ValueInput binary;
+
+        /// <summary>
+        /// The name of the variable.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden]
         public ValueInput variableName;
+
+        /// <summary>
+        /// The returned value of this variable.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden]
         public ValueOutput value;
+
         protected override void Definition()
         {
             binary = ValueInput<BinarySave>(nameof(binary));

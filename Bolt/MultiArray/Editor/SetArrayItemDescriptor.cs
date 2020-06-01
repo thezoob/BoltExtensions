@@ -5,6 +5,9 @@ using Bolt;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The descriptor that sets the icon for Set Array Item.
+    /// </summary>
     [Descriptor(typeof(SetArrayItem))]
     public class SetArrayItemDescriptor : UnitDescriptor<SetArrayItem>
     {

@@ -7,33 +7,83 @@ using System.Linq;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// The Unit for triggering a Return Event.
+    /// </summary>
     [UnitCategory("Events")]
     public class TriggerReturnEvent : GlobalEventUnit<ReturnEventArg>
     {
+        /// <summary>
+        /// Overrides the Event Bus registration name for matching a specific event type of TriggerReturn.
+        /// </summary>
         protected override string hookName => "TriggerReturn";
 
         [Serialize]
         private int _count;
 
+        /// <summary>
+        /// The amount of arguments to trigger with.
+        /// </summary>
         [Inspectable]
         [UnitHeaderInspectable("Arguments")]
         public int count { get { return _count; } set { _count = Mathf.Clamp(value, 0, 10); } }
+
+        /// <summary>
+        /// Turns the event into a global event without a target.
+        /// </summary>
         [UnitHeaderInspectable("Global")]
         public bool global;
 
+
+        /// <summary>
+        /// The value we store the returning value in, so we can return this to the result value port.
+        /// </summary>
         public object storingValue;
 
+        /// <summary>
+        /// The Control Input to enter when we want to trigger the event.
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         public ControlInput enter;
+
+        /// <summary>
+        /// The GameObject target that has the ReturnEventUnit.
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         [NullMeansSelf]
-        public ValueInput target, name;
+        public ValueInput target;
+
+        /// <summary>
+        /// The name of the Return Event.
+        /// </summary>
         [DoNotSerialize]
-        public ControlOutput exit, complete;
+        [PortLabelHidden]
+        [NullMeansSelf]
+        public ValueInput name;
+
+        /// <summary>
+        /// The Control Output invoked immediately after we trigger the return. If the Return Event returns within the same frame, Complete will happen after this port is triggered.
+        /// </summary>
+        [DoNotSerialize]
+        public ControlOutput exit;
+
+        /// <summary>
+        /// The Control Output port to invoke or run when the event has been returned from.
+        /// </summary>
+        [DoNotSerialize]
+        public ControlOutput complete;
+
+        /// <summary>
+        /// The Value Inputs for the arguments.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueInput> arguments = new List<ValueInput>();
+
+        /// <summary>
+        /// The Value Ouput of the value we returned.
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         public ValueOutput value;
@@ -66,6 +116,9 @@ namespace Lasm.BoltExtensions
             Succession(enter, trigger);
         }
 
+        /// <summary>
+        /// Sets up the arguments for the Return Event, and triggers it upon entering the unit.
+        /// </summary>
         public ControlOutput Enter(Flow flow)
         {
             List<object> argumentList = new List<object>();
@@ -77,17 +130,26 @@ namespace Lasm.BoltExtensions
             return exit;
         }
 
+        /// <summary>
+        /// Returns the stored value to the output port.
+        /// </summary>
         public object GetValue(Flow flow)
         {
             return storingValue;
         }
        
+        /// <summary>
+        /// Trigger the Trigger Return Event for returning to the trigger unit.
+        /// </summary>
         public static void Trigger(ReturnEventArg args)
         {
             if (args.global) { EventBus.Trigger<ReturnEventArg>("TriggerReturn", args); return; }
             EventBus.Trigger<ReturnEventArg>("TriggerReturn", args);
         }
 
+        /// <summary>
+        /// Determines if we can return back to this unit.
+        /// </summary>
         protected override bool ShouldTrigger(Flow flow, ReturnEventArg args)
         {
             if (args.trigger == this && global && args.name == flow.GetValue<string>(name)) return true;
