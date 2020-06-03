@@ -11,7 +11,7 @@ namespace Lasm.BoltExtensions
     /// A descriptor that assigns the EventReturns icon.
     /// </summary>
     [Descriptor(typeof(EventReturn))]
-    public class EventReturnDescriptor : UnitDescriptor<EventReturn>
+    public sealed class EventReturnDescriptor : UnitDescriptor<EventReturn>
     {
         public EventReturnDescriptor(EventReturn target) : base(target)
         {

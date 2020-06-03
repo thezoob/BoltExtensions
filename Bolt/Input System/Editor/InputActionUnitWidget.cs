@@ -13,9 +13,9 @@ namespace Lasm.BoltExtensions
     /// The visuals and visual behaviour of the InputActionUnit.
     /// </summary>
     [Widget(typeof(OnInputActionUnit))]
-    public class InputActionUnitWidget : UnitWidget<OnInputActionUnit>
+    public sealed class OnInputActionUnitWidget : UnitWidget<OnInputActionUnit>
     {
-        public InputActionUnitWidget(FlowCanvas canvas, OnInputActionUnit unit) : base(canvas, unit)
+        public OnInputActionUnitWidget(FlowCanvas canvas, OnInputActionUnit unit) : base(canvas, unit)
         {
         }
 

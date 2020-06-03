@@ -19,7 +19,7 @@ namespace Lasm.BoltExtensions
         /// <summary>
         /// All the save variables.
         /// </summary>
-        [RenamedFrom("Lasm.BoltExtensions.IO.saves")]
+        [RenamedFrom("Lasm.BoltExtensions.IO.BinarySave.saves")]
         public Dictionary<string, object> variables = new Dictionary<string, object>();
 
         /// <summary>

@@ -127,7 +127,7 @@ namespace Lasm.BoltExtensions
         }
 
         /// <summary>
-        /// Subscribes Pressed() to the actions performed delegate, and Released() to the actions canceled delegate.
+        /// Binds the performed and canceled delegate to the Units status action. Pressed, Hold, Released.
         /// </summary>
         public override void StartListening(GraphStack stack)
         {

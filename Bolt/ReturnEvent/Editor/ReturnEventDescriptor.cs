@@ -9,7 +9,7 @@ namespace Lasm.BoltExtensions
     /// A descriptor that assigns the ReturnEvents icon.
     /// </summary>
     [Descriptor(typeof(ReturnEvent))]
-    public class ReturnEventDescriptor : UnitDescriptor<ReturnEvent>
+    public sealed class ReturnEventDescriptor : UnitDescriptor<ReturnEvent>
     {
         public static Texture2D icon;
 

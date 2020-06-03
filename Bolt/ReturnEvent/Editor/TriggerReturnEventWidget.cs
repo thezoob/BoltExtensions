@@ -7,7 +7,7 @@ namespace Lasm.BoltExtensions
     /// The visuals for the TriggerReturnEvent Unit.
     /// </summary>
     [Widget(typeof(TriggerReturnEvent))]
-    public class TriggerReturnEventWidget : UnitWidget<TriggerReturnEvent>
+    public sealed class TriggerReturnEventWidget : UnitWidget<TriggerReturnEvent>
     {
         public TriggerReturnEventWidget(FlowCanvas canvas, TriggerReturnEvent unit) : base(canvas, unit)
         {

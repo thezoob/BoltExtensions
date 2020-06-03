@@ -10,29 +10,57 @@ namespace Lasm.BoltExtensions
     /// The Event that starts some logic before return back flow and a value.
     /// </summary>
     [UnitCategory("Events")]
-    public class ReturnEvent : GlobalEventUnit<ReturnEventArg>
+    public sealed class ReturnEvent : GlobalEventUnit<ReturnEventArg>
     {
         [Serialize]
         private int _count;
+
+        /// <summary>
+        /// The amount of arguments this event has.
+        /// </summary>
         [Inspectable]
         [UnitHeaderInspectable("Arguments")]
         public int count { get { return _count; } set { _count = Mathf.Clamp(value, 0, 10); } }
+
+        /// <summary>
+        /// Turns the event into a global event without a target.
+        /// </summary>
         [UnitHeaderInspectable("Global")]
         public bool global;
+        
+        /// <summary>
+        /// Outputs the data wrapper, which contains the references needed for returning back to the trigger.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput eventData;
+
+        /// <summary>
+        /// A list of argument ports.
+        /// </summary>
         [DoNotSerialize]
         public List<ValueOutput> arguments = new List<ValueOutput>();
+
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         public ValueInput name;
-        [DoNotSerialize]
-        [PortLabelHidden]
-        public ValueOutput value;
+
+        /// <summary>
+        /// The target receiver GameObject for this event.
+        /// </summary>
         [DoNotSerialize][PortLabelHidden][NullMeansSelf]
         public ValueInput target;
+
+        /// <summary>
+        /// Overrides the hook name that the Event Bus calls to decipher different event types.
+        /// </summary>
         protected override string hookName { get { return "Return"; } }
 
+        /// <summary>
+        /// Defines the ports of this unit.
+        /// </summary>
         protected override void Definition()
         {
             base.Definition();
@@ -99,6 +127,4 @@ namespace Lasm.BoltExtensions
             EventBus.Trigger<ReturnEventArg>("Return", new ReturnEventArg(trigger, target, name, global, args));
         }
     }
-
-
 }

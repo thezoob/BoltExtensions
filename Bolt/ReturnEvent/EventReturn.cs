@@ -10,7 +10,7 @@ namespace Lasm.BoltExtensions
     /// The Unit that returns your flow and value back to the Complete port of the initial trigger unit.
     /// </summary>
     [UnitCategory("Events")][UnitShortTitle("Return")][UnitSubtitle("Return Event")]
-    public class EventReturn : Unit
+    public sealed class EventReturn : Unit
     {
         /// <summary>
         /// The Control Input entered when we want to return back.
@@ -36,6 +36,9 @@ namespace Lasm.BoltExtensions
 
         private FlowMachine machine;
 
+        /// <summary>
+        /// Defines the ports of the unit.
+        /// </summary>
         protected override void Definition()
         {
             enter = ControlInput("enter", Enter);

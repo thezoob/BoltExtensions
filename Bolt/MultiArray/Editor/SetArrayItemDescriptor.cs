@@ -9,7 +9,7 @@ namespace Lasm.BoltExtensions
     /// The descriptor that sets the icon for Set Array Item.
     /// </summary>
     [Descriptor(typeof(SetArrayItem))]
-    public class SetArrayItemDescriptor : UnitDescriptor<SetArrayItem>
+    public sealed class SetArrayItemDescriptor : UnitDescriptor<SetArrayItem>
     {
         public static Texture2D icon;
 

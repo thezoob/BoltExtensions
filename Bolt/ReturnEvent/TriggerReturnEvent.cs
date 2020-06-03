@@ -11,10 +11,10 @@ namespace Lasm.BoltExtensions
     /// The Unit for triggering a Return Event.
     /// </summary>
     [UnitCategory("Events")]
-    public class TriggerReturnEvent : GlobalEventUnit<ReturnEventArg>
+    public sealed class TriggerReturnEvent : GlobalEventUnit<ReturnEventArg>
     {
         /// <summary>
-        /// Overrides the Event Bus registration name for matching a specific event type of TriggerReturn.
+        /// Overrides the hook name that the Event Bus calls to decipher different event types.
         /// </summary>
         protected override string hookName => "TriggerReturn";
 
@@ -88,6 +88,9 @@ namespace Lasm.BoltExtensions
         [PortLabelHidden]
         public ValueOutput value;
         
+        /// <summary>
+        /// Defines the ports of this unit.
+        /// </summary>
         protected override void Definition()
         {
             base.Definition();

@@ -9,7 +9,7 @@ namespace Lasm.BoltExtensions
     /// A descriptor that assigns the TriggerReturnEvent icon.
     /// </summary>
     [Descriptor(typeof(TriggerReturnEvent))]
-    public class TriggerReturnEventDescriptor : UnitDescriptor<TriggerReturnEvent>
+    public sealed class TriggerReturnEventDescriptor : UnitDescriptor<TriggerReturnEvent>
     {
         public TriggerReturnEventDescriptor(TriggerReturnEvent target) : base(target)
         {
