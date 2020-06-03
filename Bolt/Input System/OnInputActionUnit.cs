@@ -16,7 +16,7 @@ namespace Lasm.BoltExtensions
     [TypeIcon(typeof(OnButtonInput))]
     [UnitTitle("On Input Action")]
     [UnitCategory("Events/Input/Input System")]
-    public class OnInputActionUnit : ManualEventUnit<NullInputEventArgs>
+    public sealed class OnInputActionUnit : ManualEventUnit<NullInputEventArgs>
     {
         /// <summary>
         /// Overrides the hook name that the Event Bus calls to decipher different event types.

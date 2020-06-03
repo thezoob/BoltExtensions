@@ -7,7 +7,7 @@ namespace Lasm.BoltExtensions.IO
     /// The visuals and visual behaviour of a RemoveBinaryVariable Unit.
     /// </summary>
     [Widget(typeof(RemoveBinaryVariable))]
-    public class RemoveBinaryVariableWidget : UnitWidget<RemoveBinaryVariable>
+    public sealed class RemoveBinaryVariableWidget : UnitWidget<RemoveBinaryVariable>
     {
         public RemoveBinaryVariableWidget(FlowCanvas canvas, RemoveBinaryVariable unit) : base(canvas, unit)
         {

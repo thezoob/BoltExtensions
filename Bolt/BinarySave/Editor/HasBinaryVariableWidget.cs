@@ -7,7 +7,7 @@ namespace Lasm.BoltExtensions.IO
     /// The visuals and visual behaviour of a HasBinaryVariable Unit.
     /// </summary>
     [Widget(typeof(HasBinaryVariable))]
-    public class HasBinaryVariableWidget : UnitWidget<HasBinaryVariable>
+    public sealed class HasBinaryVariableWidget : UnitWidget<HasBinaryVariable>
     {
         public HasBinaryVariableWidget(FlowCanvas canvas, HasBinaryVariable unit) : base(canvas, unit)
         {

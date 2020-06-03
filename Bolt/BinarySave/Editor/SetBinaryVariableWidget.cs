@@ -7,7 +7,7 @@ namespace Lasm.BoltExtensions.IO
     /// The visuals and visual behaviour of a SetBinaryVariable Unit.
     /// </summary>
     [Widget(typeof(SetBinaryVariable))]
-    public class SetBinaryVariableWidget : UnitWidget<SetBinaryVariable>
+    public sealed class SetBinaryVariableWidget : UnitWidget<SetBinaryVariable>
     {
         public SetBinaryVariableWidget(FlowCanvas canvas, SetBinaryVariable unit) : base(canvas, unit)
         {

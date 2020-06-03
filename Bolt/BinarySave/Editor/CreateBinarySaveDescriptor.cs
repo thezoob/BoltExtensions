@@ -4,10 +4,10 @@ using Bolt;
 namespace Lasm.BoltExtensions.IO
 {
     /// <summary>
-    /// A descriptor for a CreateBinarySave Unit. Sets the ports names properly.
+    /// A descriptor for a CreateBinarySave Unit.
     /// </summary>
     [Descriptor(typeof(CreateBinarySave))]
-    public class CreateBinarySaveDescriptor : BinarySaveUnitDescriptor
+    public sealed class CreateBinarySaveDescriptor : BinarySaveUnitDescriptor
     {
         public CreateBinarySaveDescriptor(CreateBinarySave target) : base(target)
         {

@@ -68,7 +68,7 @@ namespace Lasm.BoltExtensions
         }
 
         /// <summary>
-        /// Attempt to delete a file.
+        /// Deletes a file if it exists.
         /// </summary>
         public static void Delete(string path)
         {
