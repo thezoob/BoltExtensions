@@ -151,13 +151,13 @@ namespace Lasm.BoltExtensions
                 contextAction = context.action;
                 isPressing = true;
 
-                if (status == InputActionStatus.Pressing)
+                if (status == InputActionStatus.Hold)
                 {
                     reference.component.StartCoroutine(Pressing());
                 }
                 else
                 {
-                    if (status == InputActionStatus.Pressed)
+                    if (status == InputActionStatus.Press)
                     {
                         switch (action.expectedControlType)
                         {
@@ -250,7 +250,7 @@ namespace Lasm.BoltExtensions
             {
                 isPressing = false;
 
-                if (status == InputActionStatus.Released)
+                if (status == InputActionStatus.Release)
                 {
                     switch (action.expectedControlType)
                     {
@@ -307,9 +307,9 @@ namespace Lasm.BoltExtensions
     /// </summary>
     public enum InputActionStatus
     {
-        Pressed,
-        Pressing,
-        Released
+        Press,
+        Hold,
+        Release
     }
 }
 #endif
