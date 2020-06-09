@@ -89,7 +89,7 @@ namespace Lasm.BoltExtensions
         {
             base.Definition();
 
-            player = ValueInput<PlayerInput>("actions", null).NullMeansSelf();
+            player = ValueInput<PlayerInput>("player", null).NullMeansSelf();
 
             if (action != null)
             {

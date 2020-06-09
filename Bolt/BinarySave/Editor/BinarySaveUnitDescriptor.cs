@@ -8,7 +8,8 @@ namespace Lasm.BoltExtensions.IO
     /// <summary>
     /// A descriptor for all BinarySaveUnits. Provides the fetching and application of the icon for these units.
     /// </summary>
-    public abstract class BinarySaveUnitDescriptor : UnitDescriptor<BinarySaveUnit>
+    [Descriptor(typeof(BinarySaveUnit))]
+    public class BinarySaveUnitDescriptor : UnitDescriptor<BinarySaveUnit>
     {
         private Texture2D _icon;
         public Texture2D icon
