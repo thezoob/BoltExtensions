@@ -14,7 +14,9 @@ namespace Lasm.BoltExtensions
     /// </summary>
     [Widget(typeof(OnInputActionUnit))]
     public sealed class OnInputActionUnitWidget : UnitWidget<OnInputActionUnit>
-    {
+    { 
+        string action;
+         
         public OnInputActionUnitWidget(FlowCanvas canvas, OnInputActionUnit unit) : base(canvas, unit)
         {
         }
@@ -43,7 +45,7 @@ namespace Lasm.BoltExtensions
                 var actionText = "( None Selected )";
 
                 if (unit.action != null && unit.map != null) { actionText = unit.map.name + " : " + currentAction.name; }
-
+                
                 if (GUI.Button(actionRect, actionText))
                 {
                     var menu = new GenericMenu();
@@ -67,6 +69,16 @@ namespace Lasm.BoltExtensions
                     }
 
                     menu.ShowAsContext();
+                }
+
+                if (currentAction != null && action != currentAction.expectedControlType)
+                {
+                    unit.Define(); 
+                    action = currentAction.expectedControlType;
+                }
+                else
+                {
+                    unit.action = unit.asset.FindAction(currentAction.name);
                 }
             }
         }

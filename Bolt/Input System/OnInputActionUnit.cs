@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Lasm.BoltExtensions
 {
@@ -46,7 +47,7 @@ namespace Lasm.BoltExtensions
         /// The asset that contains the actions we are using.
         /// </summary>
         [UnitHeaderInspectable]
-        [Inspectable]
+        [Inspectable][OdinSerialize]
         public InputActionAsset asset;
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace Lasm.BoltExtensions
         /// </summary>
         [OdinSerialize]
         public InputAction action;
-
+         
         /// <summary>
         /// The map that was chosen, that belongs to the current action. Used internally for editor purposes.
         /// </summary>
@@ -95,27 +96,59 @@ namespace Lasm.BoltExtensions
             {
                 switch (action.expectedControlType)
                 {
-                    case "Vector2":
+                    case "Any":
+                        value = ValueOutput<object>("value", (flow) => { return lastValue; });
+                        break;
+
+                    case "Axis":
+                        value = ValueOutput<float>("value", (flow) => { return (float)lastValue; });
+                        break;
+
+                    case "Bone":
+                        value = ValueOutput<UnityEngine.XR.Bone>("value", (flow) => { return (UnityEngine.XR.Bone)lastValue; });
+                        break;
+
+                    case "Digital":
+                        value = ValueOutput<double>("value", (flow) => { return (double)lastValue; });
+                        break;
+
+                    case "Double":
+                        value = ValueOutput<double>("value", (flow) => { return (double)lastValue; });
+                        break;
+
+                    case "Dpad":
                         value = ValueOutput<Vector2>("value", (flow) => { return (Vector2)lastValue; });
                         break;
 
-                    case "Vector3":
+                    case "Euler":
                         value = ValueOutput<Vector3>("value", (flow) => { return (Vector3)lastValue; });
-                        break;
-
-                    case "Integer":
-                        value = ValueOutput<int>("value", (flow) => { return (int)lastValue; });
                         break;
 
                     case "Float":
                         value = ValueOutput<float>("value", (flow) => { return (float)lastValue; });
                         break;
 
+                    case "Integer":
+                        value = ValueOutput<int>("value", (flow) => { return (int)lastValue; });
+                        break;
+
                     case "Quaternion":
                         value = ValueOutput<Quaternion>("value", (flow) => { return (Quaternion)lastValue; });
                         break;
+                        
+                    case "Stick":
+                        value = ValueOutput<Vector2>("value", (flow) => { return (Vector2)lastValue; });
+                        break;
 
-                    case "Euler":
+                    case "Touch":
+                        value = ValueOutput<TouchState>("value", (flow) => { return (TouchState)lastValue; });
+                        break;
+
+                    case "Vector2":
+                        value = ValueOutput<Vector2>("value", (flow) => { return (Vector2)lastValue; });
+                        break;
+
+                    case "Vector3":
                         value = ValueOutput<Vector3>("value", (flow) => { return (Vector3)lastValue; });
                         break;
 
