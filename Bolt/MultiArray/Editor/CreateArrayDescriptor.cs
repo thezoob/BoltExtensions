@@ -8,16 +8,16 @@ namespace Lasm.BoltExtensions
     /// <summary>
     /// The descriptor that sets the icon for CreateMultiArray.
     /// </summary>
-    [Descriptor(typeof(CreateArray))]
+    [Descriptor(typeof(CreateMultiArray))]
     [RenamedFrom("Lasm.BoltExtensions.CreateArrayDescriptor")]
-    public class CreateMultiArrayDescriptor : UnitDescriptor<CreateArray>
+    public class CreateMultiArrayDescriptor : UnitDescriptor<CreateMultiArray>
     {
         /// <summary>
         /// The icon for CreateMultiArray.
         /// </summary>
         public static Texture2D icon;
 
-        public CreateMultiArrayDescriptor(CreateArray unit) : base(unit)
+        public CreateMultiArrayDescriptor(CreateMultiArray unit) : base(unit)
         {
 
         }
