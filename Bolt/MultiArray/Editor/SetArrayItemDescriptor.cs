@@ -29,7 +29,7 @@ namespace Lasm.BoltExtensions
         {
             if (icon == null) icon = AssetDatabase.LoadAssetAtPath<Texture2D>(RootPathFinder.rootPath + "Bolt/MultiArray/Editor/Resources/Lasm.BoltExtensions.GetArrayItem@32x.png");
 
-            return EditorTexture.Single(GetArrayItemDescriptor.icon);
+            return EditorTexture.Single(icon);
         }
     }
 }
