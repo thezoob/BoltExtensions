@@ -7,6 +7,7 @@ namespace Lasm.BoltExtensions
     /// Clears all variables of a Binary Save object.
     /// </summary>
     [RenamedFrom("Lasm.BoltExtensions.IO.ClearBinarySave")]
+    [UnitCategory("IO")]
     public sealed class ClearBinarySave : BinarySaveUnit
     {
         /// <summary>
