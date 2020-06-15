@@ -68,7 +68,11 @@ namespace Lasm.BoltExtensions
                     result = ValueOutput<IEnumerable<object>>("result", (flow) => { return output; });
                     break;
             }
-            
+
+            Succession(enter, exit);
+            Succession(enter, body);
+            Requirement(condition, enter);
+            Assignment(enter, item);
         }
 
         private void PerformOperation(Flow flow)
