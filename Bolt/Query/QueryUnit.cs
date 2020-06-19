@@ -7,6 +7,9 @@ using Ludiq;
 
 namespace Lasm.BoltExtensions
 {
+    /// <summary>
+    /// A unit for using Linq querying operations in a Bolt graph.
+    /// </summary>
     [UnitTitle("Query")]
     [UnitCategory("Collections")]
     [TypeIcon(typeof(IEnumerable))]
@@ -15,25 +18,52 @@ namespace Lasm.BoltExtensions
         [UnitHeaderInspectable("Operation")]
         public QueryOperation operation;
 
+        /// <summary>
+        /// The Control Input entered when we want to begin the query
+        /// </summary>
         [DoNotSerialize]
         [PortLabelHidden]
         public ControlInput enter;
 
+        /// <summary>
+        /// An optional control flow for helping to determine the condition of the current loops item in relation to the results.
+        /// </summary>
         [DoNotSerialize]
         public ControlOutput body;
 
+        /// <summary>
+        /// The Control Output for when the query is complete.
+        /// </summary>
         [DoNotSerialize]
         public ControlOutput exit;
 
+        /// <summary>
+        /// The ValueInput for the collection/list we will be querying through.
+        /// </summary>
         [DoNotSerialize]
         public ValueInput collection;
 
+        /// <summary>
+        /// The ValueInput for the condition to check for each item in the query.
+        /// </summary>
         [DoNotSerialize]
         public ValueInput condition;
 
+        /// <summary>
+        /// The ValueInput for the condition to check for each item in the query.
+        /// </summary>
+        [DoNotSerialize]
+        public ValueInput key;
+
+        /// <summary>
+        /// The ValueOutput for the current item of the query.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput item;
 
+        /// <summary>
+        /// The ValueOutput of the resulting collection after querying.
+        /// </summary>
         [DoNotSerialize]
         public ValueOutput result;
 
@@ -50,7 +80,19 @@ namespace Lasm.BoltExtensions
             });
 
             collection = ValueInput<IEnumerable<object>>("collection");
-            condition = ValueInput<bool>("condition");
+
+            switch (operation)
+            {
+                case QueryOperation.OrderBy:
+                    key = ValueInput<object>("key");
+                    break;
+                case QueryOperation.Single:
+                    condition = ValueInput<bool>("condition");
+                    break;
+                case QueryOperation.Where:
+                    condition = ValueInput<bool>("condition");
+                    break;
+            }
 
             exit = ControlOutput("exit");
             body = ControlOutput("body");
@@ -59,20 +101,33 @@ namespace Lasm.BoltExtensions
             switch (operation)
             {
                 case QueryOperation.OrderBy:
-                    result = ValueOutput<IEnumerable<object>>("result", (flow) => { return output; });
+                    result = ValueOutput("result", (flow) => { return output; });
                     break;
                 case QueryOperation.Single:
                     result = ValueOutput<object>("result", (flow) => { return single; });
                     break;
                 case QueryOperation.Where:
-                    result = ValueOutput<IEnumerable<object>>("result", (flow) => { return output; });
+                    result = ValueOutput("result", (flow) => { return output; });
                     break;
             }
 
             Succession(enter, exit);
             Succession(enter, body);
-            Requirement(condition, enter);
+
             Assignment(enter, item);
+
+            switch (operation)
+            {
+                case QueryOperation.OrderBy:
+                    Requirement(key, enter);
+                    break;
+                case QueryOperation.Single:
+                    Requirement(condition, enter);
+                    break;
+                case QueryOperation.Where:
+                    Requirement(condition, enter);
+                    break;
+            }
         }
 
         private void PerformOperation(Flow flow)
@@ -80,16 +135,16 @@ namespace Lasm.BoltExtensions
             switch (operation)
             {
                 case QueryOperation.OrderBy:
-                    output = flow.GetValue<IEnumerable<object>>(collection).OrderBy((item) =>
+                    output = flow.GetValue<IEnumerable>(collection).Cast<object>().OrderBy((item) =>
                     {
                         current = item;
                         flow.Invoke(body);
-                        return flow.GetValue<bool>(condition);
-                    });
+                        return flow.GetValue<object>(key);
+                    }).ToList();
                     break;
 
                 case QueryOperation.Single:
-                    single = flow.GetValue<IEnumerable<object>>(collection).Single((item) =>
+                    single = flow.GetValue<IEnumerable>(collection).Cast<object>().Single((item) =>
                     {
                         current = item;
                         flow.Invoke(body);
@@ -98,12 +153,12 @@ namespace Lasm.BoltExtensions
                     break;
 
                 case QueryOperation.Where:
-                    output = flow.GetValue<IEnumerable<object>>(collection).Where((item) =>
+                    output = flow.GetValue<IEnumerable>(collection).Cast<object>().Where((item) =>
                     {
                         current = item;
                         flow.Invoke(body);
                         return flow.GetValue<bool>(condition);
-                    });
+                    }).ToList();
                     break;
             }
         }

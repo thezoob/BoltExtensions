@@ -13,7 +13,7 @@ namespace Lasm.BoltExtensions
     /// <summary>
     /// The underlying type of the Binary Save system. This is the type that will be saved and loaded with all the data you assigned.
     /// </summary>
-    [Serializable][RenamedFrom("Lasm.BoltExtensions.IO.BinarySave")]
+    [Serializable][RenamedFrom("Lasm.BoltExtensions.IO.BinarySave")][IncludeInSettings(true)]
     public sealed class BinarySave
     {
         /// <summary>

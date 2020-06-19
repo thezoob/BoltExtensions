@@ -78,7 +78,7 @@ namespace Lasm.BoltExtensions
                 }
                 else
                 {
-                    unit.action = unit.asset.FindAction(currentAction.name);
+                    if (currentAction != null) unit.action = unit.asset.FindAction(currentAction.name);
                 }
             }
         }
