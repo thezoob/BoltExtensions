@@ -140,7 +140,7 @@ namespace Lasm.BoltExtensions
                         current = item;
                         flow.Invoke(body);
                         return flow.GetValue<object>(key);
-                    }).ToList();
+                    }).ToList<object>();
                     break;
 
                 case QueryOperation.Single:
@@ -158,7 +158,7 @@ namespace Lasm.BoltExtensions
                         current = item;
                         flow.Invoke(body);
                         return flow.GetValue<bool>(condition);
-                    }).ToList();
+                    }).ToList<object>();
                     break;
             }
         }
