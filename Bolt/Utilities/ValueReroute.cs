@@ -18,7 +18,7 @@ namespace Lasm.BoltExtensions
         protected override void Definition()
         {
             input = ValueInput(portType, "in");
-            output = ValueOutput(portType, "out");
+            output = ValueOutput(portType, "out", (flow) => { return flow.GetValue(input); });
         }
     }
 }
