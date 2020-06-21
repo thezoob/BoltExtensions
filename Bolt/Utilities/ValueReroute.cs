@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Lasm.BoltExtensions
 {
-    public class Reroute : Unit
+    public sealed class ValueReroute : Unit
     {
         [DoNotSerialize][PortLabelHidden]
         public ValueInput input;

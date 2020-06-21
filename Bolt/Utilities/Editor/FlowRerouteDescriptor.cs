@@ -5,31 +5,31 @@ using UnityEngine;
 
 namespace Lasm.BoltExtensions
 {
-    [Descriptor(typeof(ValueReroute))]
-    public class RerouteDescriptor : UnitDescriptor<ValueReroute>
+    [Descriptor(typeof(FlowReroute))]
+    public class FlowRerouteDescriptor : UnitDescriptor<FlowReroute>
     {
         private static Texture2D icon;
 
-        public RerouteDescriptor(ValueReroute target) : base(target)
+        public FlowRerouteDescriptor(FlowReroute target) : base(target)
         {
         }
 
         protected override void DefinedPort(IUnitPort port, UnitPortDescription description)
         {
             base.DefinedPort(port, description);
-            
+
             description.showLabel = false;
         }
 
         protected override EditorTexture DefaultIcon()
         {
-            if (icon == null) icon = AssetDatabase.LoadAssetAtPath<Texture2D>(RootPathFinder.rootPath + "Bolt/Utilities/Editor/Resources/ValueReroute@32x.png");
-            return EditorTexture.Single(icon); 
+            if (icon == null) icon = AssetDatabase.LoadAssetAtPath<Texture2D>(RootPathFinder.rootPath + "Bolt/Utilities/Editor/Resources/FlowReroute@32x.png");
+            return EditorTexture.Single(icon);
         }
 
         protected override EditorTexture DefinedIcon()
         {
-            if (icon == null) icon = AssetDatabase.LoadAssetAtPath<Texture2D>(RootPathFinder.rootPath + "Bolt/Utilities/Editor/Resources/ValueReroute@32x.png");
+            if (icon == null) icon = AssetDatabase.LoadAssetAtPath<Texture2D>(RootPathFinder.rootPath + "Bolt/Utilities/Editor/Resources/FlowReroute@32x.png");
             return EditorTexture.Single(icon);
         }
     }

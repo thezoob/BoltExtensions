@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace Lasm.BoltExtensions
 {
-    [Widget(typeof(Reroute))]
-    public class RerouteWidget : UnitWidget<Reroute>
+    [Widget(typeof(ValueReroute))]
+    public class ValueRerouteWidget : UnitWidget<ValueReroute>
     {
-        public RerouteWidget(FlowCanvas canvas, Reroute unit) : base(canvas, unit)
+        public ValueRerouteWidget(FlowCanvas canvas, ValueReroute unit) : base(canvas, unit)
         {
         }
 
@@ -41,7 +41,6 @@ namespace Lasm.BoltExtensions
                 unit.portType = typeof(object);
                 if (lastType != typeof(object)) lastType = null;
             }
-
 
             if (lastType != unit.portType)
             {
