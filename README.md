@@ -9,6 +9,6 @@ Currently includes extensions for adding Multidimensional Arrays, Binary Encrypt
 
 Download the latest stable release. After you install the package. Goto Tools > Bolt > Build Unit Options.
 
-<a href="http://www.lifeandstylemedia.com/docs/manual/index.php.php">VIEW THE MANUALS</a><br/>
+<a href="http://www.lifeandstylemedia.com/docs/manual/index.php">VIEW THE MANUALS</a><br/>
 <a href="http://www.lifeandstylemedia.com/docs/api/index.php">VIEW THE SCRIPTING API</a>
 </p>
