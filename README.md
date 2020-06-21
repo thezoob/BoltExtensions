@@ -5,11 +5,10 @@
  
 Extensions for Bolt Visual Scripting for the Unity Engine.
 
-Currently includes extensions for adding Multidimensional Arrays, Binary Encryption, Returnable Events, and the new Input System.
+Currently includes extensions for adding Multidimensional Arrays, Binary Encryption, Returnable Events, Input System, Linq Queryables, and Reroutes.
 
 Download the latest stable release. After you install the package. Goto Tools > Bolt > Build Unit Options.
 
-<a href="http://www.lifeandstylemedia.com/docs/api/entries/bolt/binarysave/BinarySave.php">VIEW THE SCRIPTING API</a>
-
-Manual Coming Soon...
+<a href="http://www.lifeandstylemedia.com/docs/manual/index.php.php">VIEW THE MANUALS</a><br/>
+<a href="http://www.lifeandstylemedia.com/docs/api/index.php">VIEW THE SCRIPTING API</a>
 </p>
