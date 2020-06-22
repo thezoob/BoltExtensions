@@ -3,6 +3,7 @@ using Ludiq;
 
 namespace Lasm.BoltExtensions
 {
+    [UnitOrder(101)]
     public sealed class FlowReroute : Unit
     {
         [DoNotSerialize]

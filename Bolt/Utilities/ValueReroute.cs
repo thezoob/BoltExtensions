@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Lasm.BoltExtensions
 {
+    [UnitOrder(100)]
     public sealed class ValueReroute : Unit
     {
         [DoNotSerialize][PortLabelHidden]
