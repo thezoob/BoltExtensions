@@ -16,6 +16,7 @@ namespace Lasm.BoltExtensions
         {
             input = ControlInput("in", (flow) => { return output; });
             output = ControlOutput("out");
+            Succession(input, output);
         }
     }
 }
