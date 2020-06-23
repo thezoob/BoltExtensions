@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Lasm.BoltExtensions
 {
     [Widget(typeof(ConvertUnit))]
-    public class ConvertUnitWidget : UnitWidget<ConvertUnit>
+    public sealed class ConvertUnitWidget : UnitWidget<ConvertUnit>
     {
         public ConvertUnitWidget(FlowCanvas canvas, ConvertUnit unit) : base(canvas, unit)
         {

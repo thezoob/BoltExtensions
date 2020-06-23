@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Lasm.BoltExtensions
 {
     [Descriptor(typeof(FlowReroute))]
-    public class FlowRerouteDescriptor : UnitDescriptor<FlowReroute>
+    public sealed class FlowRerouteDescriptor : UnitDescriptor<FlowReroute>
     {
         private static Texture2D icon;
 

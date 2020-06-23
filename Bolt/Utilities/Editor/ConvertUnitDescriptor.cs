@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Lasm.BoltExtensions
 {
     [Descriptor(typeof(ConvertUnit))]
-    public class ConvertUnitDescriptor : UnitDescriptor<ConvertUnit>
+    public sealed class ConvertUnitDescriptor : UnitDescriptor<ConvertUnit>
     {
         private static Texture2D icon;
 

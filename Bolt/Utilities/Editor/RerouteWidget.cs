@@ -9,7 +9,7 @@ using System.Linq;
 namespace Lasm.BoltExtensions
 {
     [Widget(typeof(ValueReroute))]
-    public class ValueRerouteWidget : UnitWidget<ValueReroute>
+    public sealed class ValueRerouteWidget : UnitWidget<ValueReroute>
     {
         public ValueRerouteWidget(FlowCanvas canvas, ValueReroute unit) : base(canvas, unit)
         {

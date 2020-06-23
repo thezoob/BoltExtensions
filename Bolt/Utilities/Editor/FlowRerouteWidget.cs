@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Lasm.BoltExtensions
 {
     [Widget(typeof(FlowReroute))]
-    public class FlowRerouteWidget : UnitWidget<FlowReroute>
+    public sealed class FlowRerouteWidget : UnitWidget<FlowReroute>
     {
         public FlowRerouteWidget(FlowCanvas canvas, FlowReroute unit) : base(canvas, unit)
         {
