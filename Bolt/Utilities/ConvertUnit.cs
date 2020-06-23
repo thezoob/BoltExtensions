@@ -29,7 +29,7 @@ namespace Lasm.BoltExtensions
         protected override void Definition()
         {
             value = ValueInput<object>("value");
-            result = ValueOutput(type, "result", (flow) => 
+            result = ValueOutput(conversion == ConversionType.Any ? type : (conversion == ConversionType.ToArrayOfObject ? typeof(object[]) : typeof(List<object>)), "result", (flow) => 
             {
                 switch (conversion)
                 {

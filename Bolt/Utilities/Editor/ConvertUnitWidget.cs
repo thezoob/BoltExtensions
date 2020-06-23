@@ -33,6 +33,7 @@ namespace Lasm.BoltExtensions
             {
                 lastConversionType = unit.conversion;
                 Reposition();
+                unit.Define();
             }
 
             if (lastType == null || lastType != unit.type)
