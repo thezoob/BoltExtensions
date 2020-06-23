@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Lasm.BoltExtensions
 {
     [Descriptor(typeof(ValueReroute))]
-    public sealed class RerouteDescriptor : UnitDescriptor<ValueReroute>
+    public sealed class ValueRerouteDescriptor : UnitDescriptor<ValueReroute>
     {
         private static Texture2D icon;
 
-        public RerouteDescriptor(ValueReroute target) : base(target)
+        public ValueRerouteDescriptor(ValueReroute target) : base(target)
         {
         }
 
