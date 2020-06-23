@@ -7,8 +7,6 @@ namespace Lasm.BoltExtensions
     [Descriptor(typeof(ConvertUnit))]
     public sealed class ConvertUnitDescriptor : UnitDescriptor<ConvertUnit>
     {
-        private static Texture2D icon;
-
         public ConvertUnitDescriptor(ConvertUnit target) : base(target)
         {
         }
