@@ -1,5 +1,6 @@
 ﻿using Bolt;
 using Ludiq;
+using System;
 using UnityEngine;
 
 namespace Lasm.BoltExtensions
@@ -14,6 +15,7 @@ namespace Lasm.BoltExtensions
         protected override bool showHeaderAddon => true;
         public override bool foregroundRequiresInput => true;
         private ConversionType lastConversionType;
+        private Type lastType;
 
         protected override void DrawHeaderAddon()
         {
@@ -31,6 +33,12 @@ namespace Lasm.BoltExtensions
             {
                 lastConversionType = unit.conversion;
                 Reposition();
+            }
+
+            if (lastType == null || lastType != unit.type)
+            {
+                lastType = unit.type;
+                unit.Define();
             }
         }
 
