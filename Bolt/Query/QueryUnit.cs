@@ -15,7 +15,7 @@ namespace Lasm.BoltExtensions
     [TypeIcon(typeof(IEnumerable))]
     public class QueryUnit : Unit
     {
-        [UnitHeaderInspectable("Operation")]
+        [UnitHeaderInspectable(null)][InspectorWide]
         public QueryOperation operation;
 
         /// <summary>
