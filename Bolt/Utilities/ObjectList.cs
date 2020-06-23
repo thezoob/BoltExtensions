@@ -7,7 +7,7 @@ namespace Lasm.BoltExtensions
     /// <summary>
     /// An AOTDictuonary replacement that can be serialized and saved.
     /// </summary>
-    [Serializable][Inspectable]
+    [Serializable][Inspectable][IncludeInSettings(true)]
     [RenamedFrom("Lasm.BoltExtensions.IO.ObjectList")]
     public sealed class ObjectList : List<object> { }
 }
