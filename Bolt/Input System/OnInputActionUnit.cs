@@ -1,4 +1,4 @@
-﻿#if ENABLE_INPUT_SYSTEM
+﻿
 using Bolt;
 using Lasm.OdinSerializer;
 using Ludiq;
@@ -88,6 +88,7 @@ namespace Lasm.BoltExtensions
 
         protected override void Definition()
         {
+#if ENABLE_INPUT_SYSTEM
             base.Definition();
 
             player = ValueInput<PlayerInput>("player", null).NullMeansSelf();
@@ -157,6 +158,7 @@ namespace Lasm.BoltExtensions
                         break;
                 }
             }
+#endif
         }
 
         /// <summary>
@@ -164,6 +166,7 @@ namespace Lasm.BoltExtensions
         /// </summary>
         public override void StartListening(GraphStack stack)
         {
+#if ENABLE_INPUT_SYSTEM
             reference = stack.AsReference();
             var flow = Flow.New(reference);
             playerInput = flow.GetValue<PlayerInput>(player);
@@ -175,8 +178,10 @@ namespace Lasm.BoltExtensions
                 playerInput.actions[action.name].performed += Pressed; // Pressed
                 playerInput.actions[action.name].canceled += Released; // Released
             }
+#endif
         }
 
+#if ENABLE_INPUT_SYSTEM
         private void Pressed(InputAction.CallbackContext context)
         {
             if (action != null)
@@ -320,6 +325,7 @@ namespace Lasm.BoltExtensions
                 }
             }
         }
+#endif
 
         /// <summary>
         /// Unsubscribes Pressed() from the actions performed delegate, and Released() from the actions canceled delegate.
@@ -327,11 +333,13 @@ namespace Lasm.BoltExtensions
         /// <param name="stack"></param>
         public override void StopListening(GraphStack stack)
         {
+#if ENABLE_INPUT_SYSTEM
             if (playerInput != null)
             {
                 playerInput.actions[action.name].started -= Pressed;
                 playerInput.actions[action.name].canceled -= Released;
             }
+#endif
         }
     }
 
@@ -345,4 +353,3 @@ namespace Lasm.BoltExtensions
         Release
     }
 }
-#endif
