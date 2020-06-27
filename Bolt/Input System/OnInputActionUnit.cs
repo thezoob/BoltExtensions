@@ -1,13 +1,14 @@
-﻿
-using Bolt;
+﻿using Bolt;
 using Lasm.OdinSerializer;
 using Ludiq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
+#endif
 
 namespace Lasm.BoltExtensions
 {
@@ -43,6 +44,7 @@ namespace Lasm.BoltExtensions
         [DoNotSerialize]
         public ControlOutput performed;
 
+#if ENABLE_INPUT_SYSTEM
         /// <summary>
         /// The asset that contains the actions we are using.
         /// </summary>
@@ -70,6 +72,7 @@ namespace Lasm.BoltExtensions
         public InputActionMap map;
 
         private Action<InputAction.CallbackContext> act;
+#endif
 
         /// <summary>
         /// The id of this action to be performed.
@@ -82,10 +85,11 @@ namespace Lasm.BoltExtensions
 
         private bool isPressing;
 
+#if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 
         private InputAction contextAction;
-
+#endif
         protected override void Definition()
         {
 #if ENABLE_INPUT_SYSTEM
