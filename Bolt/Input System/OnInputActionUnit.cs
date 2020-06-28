@@ -18,7 +18,7 @@ namespace Lasm.BoltExtensions
     [TypeIcon(typeof(OnButtonInput))]
     [UnitTitle("On Input Action")]
     [UnitCategory("Events/Input/Input System")]
-    public sealed class OnInputActionUnit : ManualEventUnit<NullInputEventArgs>
+    public sealed class OnInputActionUnit : MachineEventUnit<NullInputEventArgs>
     {
         /// <summary>
         /// Overrides the hook name that the Event Bus calls to decipher different event types.
@@ -105,113 +105,10 @@ namespace Lasm.BoltExtensions
 
             if (action != null)
             {
-                switch (action.expectedControlType)
+                value = ValueOutput<object>("value", (flow) =>
                 {
-                    case "Any":
-                        value = ValueOutput<object>("value", (flow) =>
-                        {
-                            return lastValue == null ? action.activeControl?.ReadDefaultValueAsObject() : lastValue;
-                        });
-                        break;
-
-                    case "Axis":
-                        value = ValueOutput<float>("value", (flow) =>
-                        {
-                            return lastValue == null ? 0f : (float)lastValue;
-                        });
-                        break;
-
-                    case "Bone":
-                        value = ValueOutput<UnityEngine.XR.Bone>("value", (flow) =>
-                        {
-                            return lastValue == null ? (UnityEngine.XR.Bone)typeof(UnityEngine.XR.Bone).Default() : (UnityEngine.XR.Bone)lastValue;
-                        });
-                        break;
-
-                    case "Digital":
-                        value = ValueOutput<double>("value", (flow) =>
-                        {
-                            return lastValue == null ? 0f : (float)lastValue;
-                        });
-                        break;
-
-                    case "Double":
-                        value = ValueOutput<double>("value", (flow) =>
-                        {
-                            return lastValue == null ? 0f : (float)lastValue;
-                        });
-                        break;
-
-                    case "Dpad":
-                        value = ValueOutput<Vector2>("value", (flow) =>
-                        {
-                            return lastValue == null ? Vector2.zero : (Vector2)lastValue;
-                        });
-                        break;
-
-                    case "Euler":
-                        value = ValueOutput<Vector3>("value", (flow) =>
-                        {
-                            return lastValue == null ? Vector3.zero : (Vector3)lastValue;
-                        });
-                        break;
-
-                    case "Float":
-                        value = ValueOutput<float>("value", (flow) =>
-                        {
-                            return lastValue == null ? 0f : (float)lastValue;
-                        });
-                        break;
-
-                    case "Integer":
-                        value = ValueOutput<int>("value", (flow) =>
-                        {
-                            return lastValue == null ? 0 : (int)lastValue;
-                        });
-                        break;
-
-                    case "Quaternion":
-                        value = ValueOutput<Quaternion>("value", (flow) =>
-                        {
-                            return lastValue == null ? new Quaternion(0f, 0f, 0f, 0f) : (Quaternion)lastValue;
-                        });
-                        break;
-
-                    case "Stick":
-                        value = ValueOutput<Vector2>("value", (flow) =>
-                        {
-                            return lastValue == null ? Vector2.zero : (Vector2)lastValue;
-                        });
-                        break;
-
-                    case "Touch":
-                        value = ValueOutput<TouchState>("value", (flow) =>
-                        {
-                            return lastValue == null ? (TouchState)typeof(TouchState).Default() : (TouchState)lastValue;
-                        });
-                        break;
-
-                    case "Vector2":
-                        value = ValueOutput<Vector2>("value", (flow) =>
-                        {
-                            return lastValue == null ? Vector2.zero : (Vector2)lastValue;
-                        });
-                        break;
-
-                    case "Vector3":
-                        value = ValueOutput<Vector3>("value", (flow) =>
-                        {
-                            return lastValue == null ? Vector3.zero : (Vector3)lastValue;
-                        });
-                        break;
-
-                    default:
-                        value = ValueOutput<object>("value", (flow) =>
-                        {
-                            return lastValue == null ? action.activeControl?.ReadDefaultValueAsObject() : lastValue;
-                        });
-                        break;
-                }
+                    return lastValue;
+                });
             }
 #endif
         }
@@ -230,7 +127,9 @@ namespace Lasm.BoltExtensions
 
             if (playerInput != null)
             {
+                Debug.Log(action);
                 base.StartListening(stack);
+                action = asset.FindAction(action.name);
                 playerInput.StartCoroutine(CheckInput());
             }
 #endif
@@ -238,6 +137,7 @@ namespace Lasm.BoltExtensions
 
         public IEnumerator CheckInput()
         {
+#if ENABLE_INPUT_SYSTEM
             var hasReleased = false;
             var hasPressedOnce = false;
             isPressing = false;
@@ -288,75 +188,27 @@ namespace Lasm.BoltExtensions
 
                     if (action.activeControl?.ReadValueAsObject() == action.activeControl?.ReadDefaultValueAsObject())
                     {
-                        isPressing = false;
                         SetLastValue();
+                        isPressing = false;
                     }
                 }
 
                 yield return null;
             }
+#else
+            yield break;
+#endif
         }
 
         private void SetLastValue()
         {
+#if ENABLE_INPUT_SYSTEM
             var val = action.ReadValueAsObject();
-            if (val == null)
+            if (val != null)
             {
-                val = GetDefault();
+                lastValue = val;
             }
-
-            lastValue = val;
-        }
-
-        private object GetDefault()
-        {
-            switch (action.expectedControlType)
-            {
-                case "Axis":
-                    return 0f;
-
-                case "Bone":
-                    return typeof(UnityEngine.XR.Bone).Default();
-
-                case "Button":
-                    return 0f;
-
-                case "Digital":
-                    return 0f;
-
-                case "Double":
-                    return 0f;
-
-                case "Dpad":
-                    return Vector2.zero;
-
-                case "Euler":
-                    return Vector3.zero;
-
-                case "Float":
-                    return 0f;
-
-                case "Integer":
-                    return 0;
-
-                case "Quaternion":
-                    return new Quaternion(0f, 0f, 0f, 0f);
-
-                case "Stick":
-                    return Vector2.zero;
-
-                case "Touch":
-                    return (TouchState)typeof(TouchState).Default();
-
-                case "Vector2":
-                    return Vector2.zero;
-
-                case "Vector3":
-                    return Vector3.zero;
-
-                default:
-                    return null;
-            }
+#endif
         }
 
         private void Trigger()

@@ -70,16 +70,6 @@ namespace Lasm.BoltExtensions
 
                     menu.ShowAsContext();
                 }
-
-                if (currentAction != null && action != currentAction.expectedControlType)
-                {
-                    unit.Define(); 
-                    action = currentAction.expectedControlType;
-                }
-                else
-                {
-                    if (currentAction != null) unit.action = unit.asset.FindAction(currentAction.name);
-                }
             }
         }
 
