@@ -93,6 +93,7 @@ namespace Lasm.BoltExtensions
 
         private InputAction contextAction;
 #endif
+
         protected override void Definition()
         {
 #if ENABLE_INPUT_SYSTEM
@@ -182,169 +183,134 @@ namespace Lasm.BoltExtensions
 
             if (playerInput != null)
             {
-                playerInput.actions[action.name].performed += Pressed; // Pressed
-                playerInput.actions[action.name].canceled += Released; // Released
+                base.StartListening(stack);
+                playerInput.StartCoroutine(CheckInput());
             }
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM
-        private void Pressed(InputAction.CallbackContext context)
+        public IEnumerator CheckInput()
         {
-            if (action != null)
+            var hasReleased = false;
+            var hasPressedOnce = false;
+            isPressing = false;
+
+            while (true)
             {
-                contextAction = context.action;
-                isPressing = true;
-
-                if (status == InputActionStatus.Continuous)
+                if (action != null)
                 {
-                    reference.component.StartCoroutine(Pressing());
-                }
-                else
-                {
-                    if (status == InputActionStatus.ValueChanged)
+                    var justPerformed = false;
+                    if (!isPressing)
                     {
-                        switch (action.expectedControlType)
+                        if (hasPressedOnce == false || action.activeControl?.ReadValueAsObject() != action.activeControl?.ReadDefaultValueAsObject())
                         {
-                            case "Vector2":
-                                lastValue = context.action.ReadValue<Vector2>();
-                                break;
-
-                            case "Vector3":
-                                lastValue = context.action.ReadValue<Vector3>();
-                                break;
-
-                            case "Integer":
-                                lastValue = context.action.ReadValue<int>();
-                                break;
-
-                            case "Float":
-                                lastValue = context.action.ReadValue<float>();
-                                break;
-
-                            case "Quaternion":
-                                lastValue = context.action.ReadValue<Quaternion>();
-                                break;
-
-                            case "Euler":
-                                lastValue = context.action.ReadValue<Vector3>();
-                                break;
-
-                            default:
-                                lastValue = context.action.ReadValueAsObject();
-                                break;
-                        }
-
-                        if (coroutine)
-                        {
-                            Flow.New(reference).StartCoroutine(trigger);
-                        }
-                        else
-                        {
-                            Flow.New(reference).Invoke(trigger);
+                            isPressing = true;
+                            justPerformed = true;
+                            hasReleased = false;
+                            hasPressedOnce = true;
                         }
                     }
-                }
-            }
-        }
 
-        private IEnumerator Pressing()
-        {
-            while (isPressing)
-            {
-                switch (action.expectedControlType)
-                {
-                    case "Vector2":
-                        lastValue = contextAction.ReadValue<Vector2>();
-                        break;
+                    switch (status)
+                    {
+                        case InputActionStatus.Press:
+                            if (justPerformed)
+                            {
+                                SetLastValue();
+                                Trigger();
+                            }
+                            break;
 
-                    case "Vector3":
-                        lastValue = contextAction.ReadValue<Vector3>();
-                        break;
+                        case InputActionStatus.Hold:
+                            if (isPressing)
+                            {
+                                SetLastValue();
+                                Trigger();
+                            }
+                            break;
 
-                    case "Integer":
-                        lastValue = contextAction.ReadValue<int>();
-                        break;
+                        case InputActionStatus.Release:
+                            if (!isPressing && !justPerformed && !hasReleased)
+                            {
+                                SetLastValue();
+                                Trigger();
+                                hasReleased = true;
+                            }
+                            break;
+                    }
 
-                    case "Float":
-                        lastValue = contextAction.ReadValue<float>();
-                        break;
-
-                    case "Quaternion":
-                        lastValue = contextAction.ReadValue<Quaternion>();
-                        break;
-
-                    case "Euler":
-                        lastValue = contextAction.ReadValue<Vector3>();
-                        break;
-
-                    default:
-                        lastValue = contextAction.ReadValueAsObject();
-                        break;
-                }
-
-                if (coroutine)
-                {
-                    Flow.New(reference).StartCoroutine(trigger);
-                }
-                else
-                {
-                    Flow.New(reference).Invoke(trigger);
+                    if (action.activeControl?.ReadValueAsObject() == action.activeControl?.ReadDefaultValueAsObject())
+                    {
+                        isPressing = false;
+                    }
                 }
 
                 yield return null;
             }
         }
 
+        private void SetLastValue()
+        {
+            switch (action.expectedControlType)
+            {
+                case "Vector2":
+                    lastValue = action.ReadValue<Vector2>();
+                    break;
+
+                case "Vector3":
+                    lastValue = action.ReadValue<Vector3>();
+                    break;
+
+                case "Integer":
+                    lastValue = action.ReadValue<int>();
+                    break;
+
+                case "Float":
+                    lastValue = action.ReadValue<float>();
+                    break;
+
+                case "Quaternion":
+                    lastValue = action.ReadValue<Quaternion>();
+                    break;
+
+                case "Euler":
+                    lastValue = action.ReadValue<Vector3>();
+                    break;
+
+                default:
+                    lastValue = action.ReadValueAsObject();
+                    break;
+            }
+        }
+
+        private void Trigger()
+        {
+            if (coroutine)
+            {
+                Flow.New(reference).StartCoroutine(trigger);
+            }
+            else
+            {
+                Flow.New(reference).Invoke(trigger);
+            }
+        }
+
+#if ENABLE_INPUT_SYSTEM
+        [Obsolete]
+        private void Pressed(InputAction.CallbackContext context)
+        {
+        }
+
+        [Obsolete]
+        private IEnumerator Pressing()
+        {
+            yield break;
+        }
+
+        [Obsolete]
         private void Released(InputAction.CallbackContext context)
         {
-            if (action != null)
-            {
-                isPressing = false;
 
-                if (status == InputActionStatus.Canceled)
-                {
-                    switch (action.expectedControlType)
-                    {
-                        case "Vector2":
-                            lastValue = context.action.ReadValue<Vector2>();
-                            break;
-
-                        case "Vector3":
-                            lastValue = context.action.ReadValue<Vector3>();
-                            break;
-
-                        case "Integer":
-                            lastValue = context.action.ReadValue<int>();
-                            break;
-
-                        case "Float":
-                            lastValue = context.action.ReadValue<float>();
-                            break;
-
-                        case "Quaternion":
-                            lastValue = context.action.ReadValue<Quaternion>();
-                            break;
-
-                        case "Euler":
-                            lastValue = context.action.ReadValue<Vector3>();
-                            break;
-
-                        default:
-                            lastValue = context.action.ReadValueAsObject();
-                            break;
-                    }
-
-                    if (coroutine)
-                    {
-                        Flow.New(reference).StartCoroutine(trigger);
-                    }
-                    else
-                    {
-                        Flow.New(reference).Invoke(trigger);
-                    }
-                }
-            }
         }
 #endif
 
@@ -357,8 +323,9 @@ namespace Lasm.BoltExtensions
 #if ENABLE_INPUT_SYSTEM
             if (playerInput != null)
             {
-                playerInput.actions[action.name].started -= Pressed;
-                playerInput.actions[action.name].canceled -= Released;
+                base.StopListening(stack);
+
+                playerInput.StopCoroutine(CheckInput());
             }
 #endif
         }
@@ -369,8 +336,8 @@ namespace Lasm.BoltExtensions
     /// </summary>
     public enum InputActionStatus
     {
-        ValueChanged,
-        Continuous, 
-        Canceled
+        Press,
+        Hold,
+        Release
     }
 }
