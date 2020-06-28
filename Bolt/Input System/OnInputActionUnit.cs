@@ -28,8 +28,10 @@ namespace Lasm.BoltExtensions
         /// <summary>
         /// The Value Input for the PlayerInput.
         /// </summary>
-        [DoNotSerialize][PortLabelHidden]
-        [NullMeansSelf][RenamedFrom("Lasm.BoltExtensions.actions")]
+        [DoNotSerialize]
+        [PortLabelHidden]
+        [NullMeansSelf]
+        [RenamedFrom("Lasm.BoltExtensions.actions")]
         public ValueInput player;
 
         /// <summary>
@@ -49,7 +51,8 @@ namespace Lasm.BoltExtensions
         /// The asset that contains the actions we are using.
         /// </summary>
         [UnitHeaderInspectable]
-        [Inspectable][OdinSerialize]
+        [Inspectable]
+        [OdinSerialize]
         public InputActionAsset asset;
 
         /// <summary>
@@ -64,7 +67,7 @@ namespace Lasm.BoltExtensions
         /// </summary>
         [OdinSerialize]
         public InputAction action;
-         
+
         /// <summary>
         /// The map that was chosen, that belongs to the current action. Used internally for editor purposes.
         /// </summary>
@@ -140,7 +143,7 @@ namespace Lasm.BoltExtensions
                     case "Quaternion":
                         value = ValueOutput<Quaternion>("value", (flow) => { return (Quaternion)lastValue; });
                         break;
-                        
+
                     case "Stick":
                         value = ValueOutput<Vector2>("value", (flow) => { return (Vector2)lastValue; });
                         break;
@@ -193,13 +196,13 @@ namespace Lasm.BoltExtensions
                 contextAction = context.action;
                 isPressing = true;
 
-                if (status == InputActionStatus.Hold)
+                if (status == InputActionStatus.Continuous)
                 {
                     reference.component.StartCoroutine(Pressing());
                 }
                 else
                 {
-                    if (status == InputActionStatus.Press)
+                    if (status == InputActionStatus.ValueChanged)
                     {
                         switch (action.expectedControlType)
                         {
@@ -232,7 +235,14 @@ namespace Lasm.BoltExtensions
                                 break;
                         }
 
-                        Flow.New(reference).Invoke(trigger);
+                        if (coroutine)
+                        {
+                            Flow.New(reference).StartCoroutine(trigger);
+                        }
+                        else
+                        {
+                            Flow.New(reference).Invoke(trigger);
+                        }
                     }
                 }
             }
@@ -292,7 +302,7 @@ namespace Lasm.BoltExtensions
             {
                 isPressing = false;
 
-                if (status == InputActionStatus.Release)
+                if (status == InputActionStatus.Canceled)
                 {
                     switch (action.expectedControlType)
                     {
@@ -325,7 +335,14 @@ namespace Lasm.BoltExtensions
                             break;
                     }
 
-                    Flow.New(reference).Invoke(trigger);
+                    if (coroutine)
+                    {
+                        Flow.New(reference).StartCoroutine(trigger);
+                    }
+                    else
+                    {
+                        Flow.New(reference).Invoke(trigger);
+                    }
                 }
             }
         }
@@ -352,8 +369,8 @@ namespace Lasm.BoltExtensions
     /// </summary>
     public enum InputActionStatus
     {
-        Press,
-        Hold,
-        Release
+        ValueChanged,
+        Continuous, 
+        Canceled
     }
 }
