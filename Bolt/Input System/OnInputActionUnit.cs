@@ -88,6 +88,8 @@ namespace Lasm.BoltExtensions
 
         private bool isPressing;
 
+        private Type expectedType;
+
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput playerInput;
 
@@ -171,7 +173,7 @@ namespace Lasm.BoltExtensions
                     case "Quaternion":
                         value = ValueOutput<Quaternion>("value", (flow) =>
                         {
-                            return lastValue == null ? new Quaternion(0f,0f,0f,0f) : (Quaternion)lastValue;
+                            return lastValue == null ? new Quaternion(0f, 0f, 0f, 0f) : (Quaternion)lastValue;
                         });
                         break;
 
@@ -287,6 +289,7 @@ namespace Lasm.BoltExtensions
                     if (action.activeControl?.ReadValueAsObject() == action.activeControl?.ReadDefaultValueAsObject())
                     {
                         isPressing = false;
+                        SetLastValue();
                     }
                 }
 
@@ -296,35 +299,63 @@ namespace Lasm.BoltExtensions
 
         private void SetLastValue()
         {
+            var val = action.ReadValueAsObject();
+            if (val == null)
+            {
+                val = GetDefault();
+            }
+
+            lastValue = val;
+        }
+
+        private object GetDefault()
+        {
             switch (action.expectedControlType)
             {
-                case "Vector2":
-                    lastValue = action.ReadValue<Vector2>();
-                    break;
+                case "Axis":
+                    return 0f;
 
-                case "Vector3":
-                    lastValue = action.ReadValue<Vector3>();
-                    break;
+                case "Bone":
+                    return typeof(UnityEngine.XR.Bone).Default();
 
-                case "Integer":
-                    lastValue = action.ReadValue<int>();
-                    break;
+                case "Button":
+                    return 0f;
 
-                case "Float":
-                    lastValue = action.ReadValue<float>();
-                    break;
+                case "Digital":
+                    return 0f;
 
-                case "Quaternion":
-                    lastValue = action.ReadValue<Quaternion>();
-                    break;
+                case "Double":
+                    return 0f;
+
+                case "Dpad":
+                    return Vector2.zero;
 
                 case "Euler":
-                    lastValue = action.ReadValue<Vector3>();
-                    break;
+                    return Vector3.zero;
+
+                case "Float":
+                    return 0f;
+
+                case "Integer":
+                    return 0;
+
+                case "Quaternion":
+                    return new Quaternion(0f, 0f, 0f, 0f);
+
+                case "Stick":
+                    return Vector2.zero;
+
+                case "Touch":
+                    return (TouchState)typeof(TouchState).Default();
+
+                case "Vector2":
+                    return Vector2.zero;
+
+                case "Vector3":
+                    return Vector3.zero;
 
                 default:
-                    lastValue = action.ReadValueAsObject();
-                    break;
+                    return null;
             }
         }
 
