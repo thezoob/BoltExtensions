@@ -13,7 +13,7 @@ namespace Lasm.BoltExtensions
     [UnitTitle("Query")]
     [UnitCategory("Collections")]
     [TypeIcon(typeof(IEnumerable))]
-    public class QueryUnit : Unit
+    public class QueryUnit : Unit, ISerializationCallbackReceiver
     {
         [UnitHeaderInspectable(null)][InspectorWide]
         public QueryOperation operation;
@@ -70,6 +70,44 @@ namespace Lasm.BoltExtensions
         private object current;
         private IEnumerable<object> output;
         private object single;
+        private bool outCondition;
+        [SerializeField] private string serializedOperation;
+
+        public void OnAfterDeserialize()
+        {
+            switch (serializedOperation)
+            {
+                case "Any":
+                    operation = QueryOperation.Any;
+                    break;
+                case "AnyWithCondition":
+                    operation = QueryOperation.AnyWithCondition;
+                    break;
+                case "First":
+                    operation = QueryOperation.First;
+                    break;
+                case "FirstOrDefault":
+                    operation = QueryOperation.FirstOrDefault;
+                    break;
+                case "OrderBy":
+                    operation = QueryOperation.OrderBy;
+                    break;
+                case "OrderByDescending":
+                    operation = QueryOperation.OrderByDescending;
+                    break;
+                case "Single":
+                    operation = QueryOperation.Single;
+                    break;
+                case "Where":
+                    operation = QueryOperation.Where;
+                    break;
+            }
+        }
+
+        public void OnBeforeSerialize()
+        {
+            serializedOperation = operation.SelectedName(false);
+        }
 
         protected override void Definition()
         {
@@ -81,9 +119,28 @@ namespace Lasm.BoltExtensions
 
             collection = ValueInput<IEnumerable<object>>("collection");
 
+            var showItem = true;
+            var showBody = true;
+
             switch (operation)
             {
+                case QueryOperation.Any:
+                    showItem = false;
+                    showBody = false;
+                    break;
+                case QueryOperation.AnyWithCondition:
+                    condition = ValueInput<bool>("condition");
+                    break;
+                case QueryOperation.First:
+                    condition = ValueInput<bool>("condition");
+                    break;
+                case QueryOperation.FirstOrDefault:
+                    condition = ValueInput<bool>("condition");
+                    break;
                 case QueryOperation.OrderBy:
+                    key = ValueInput<object>("key");
+                    break;
+                case QueryOperation.OrderByDescending:
                     key = ValueInput<object>("key");
                     break;
                 case QueryOperation.Single:
@@ -95,12 +152,27 @@ namespace Lasm.BoltExtensions
             }
 
             exit = ControlOutput("exit");
-            body = ControlOutput("body");
-            item = ValueOutput<object>("item", (flow) => { return current; });
+            if (showBody) body = ControlOutput("body");
+            if (showItem) item = ValueOutput<object>("item", (flow) => { return current; });
 
             switch (operation)
             {
+                case QueryOperation.Any:
+                    result = ValueOutput<bool>("result", (flow) => { return outCondition; });
+                    break;
+                case QueryOperation.AnyWithCondition:
+                    result = ValueOutput<bool>("result", (flow) => { return outCondition; });
+                    break;
+                case QueryOperation.First:
+                    result = ValueOutput<object>("result", (flow) => { return single; });
+                    break;
+                case QueryOperation.FirstOrDefault:
+                    result = ValueOutput<object>("result", (flow) => { return single; });
+                    break;
                 case QueryOperation.OrderBy:
+                    result = ValueOutput("result", (flow) => { return output; });
+                    break;
+                case QueryOperation.OrderByDescending:
                     result = ValueOutput("result", (flow) => { return output; });
                     break;
                 case QueryOperation.Single:
@@ -112,13 +184,29 @@ namespace Lasm.BoltExtensions
             }
 
             Succession(enter, exit);
-            Succession(enter, body);
+            if(showBody) Succession(enter, body);
 
-            Assignment(enter, item);
+            if (showItem) Assignment(enter, item);
+
+            Requirement(collection, enter);
 
             switch (operation)
             {
+                case QueryOperation.Any:
+                    break;
+                case QueryOperation.AnyWithCondition:
+                    Requirement(condition, enter);
+                    break;
+                case QueryOperation.First:
+                    Requirement(condition, enter);
+                    break;
+                case QueryOperation.FirstOrDefault:
+                    Requirement(condition, enter);
+                    break;
                 case QueryOperation.OrderBy:
+                    Requirement(key, enter);
+                    break;
+                case QueryOperation.OrderByDescending:
                     Requirement(key, enter);
                     break;
                 case QueryOperation.Single:
@@ -134,8 +222,48 @@ namespace Lasm.BoltExtensions
         {
             switch (operation)
             {
+                case QueryOperation.Any:
+                    outCondition = flow.GetValue<IEnumerable>(collection).Cast<object>().Any();
+                    break;
+
+                case QueryOperation.AnyWithCondition:
+                    outCondition = flow.GetValue<IEnumerable>(collection).Cast<object>().Any<object>((item) =>
+                    {
+                        current = item;
+                        flow.Invoke(body);
+                        return flow.GetValue<bool>(condition);
+                    });
+                    break;
+
+                case QueryOperation.First:
+                    single = flow.GetValue<IEnumerable>(collection).Cast<object>().First<object>((item) =>
+                    {
+                        current = item;
+                        flow.Invoke(body);
+                        return flow.GetValue<bool>(condition);
+                    });
+                    break;
+
+                case QueryOperation.FirstOrDefault:
+                    single = flow.GetValue<IEnumerable>(collection).Cast<object>().FirstOrDefault<object>((item) =>
+                    {
+                        current = item;
+                        flow.Invoke(body);
+                        return flow.GetValue<bool>(condition);
+                    });
+                    break;
+
                 case QueryOperation.OrderBy:
                     output = flow.GetValue<IEnumerable>(collection).Cast<object>().OrderBy((item) =>
+                    {
+                        current = item;
+                        flow.Invoke(body);
+                        return flow.GetValue<object>(key);
+                    });
+                    break;
+
+                case QueryOperation.OrderByDescending:
+                    output = flow.GetValue<IEnumerable>(collection).Cast<object>().OrderByDescending((item) =>
                     {
                         current = item;
                         flow.Invoke(body);

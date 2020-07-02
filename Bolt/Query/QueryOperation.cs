@@ -5,7 +5,12 @@
     /// </summary>
     public enum QueryOperation
     {
+        Any,
+        AnyWithCondition,
+        First,
+        FirstOrDefault,
         OrderBy,
+        OrderByDescending,
         Single,
         Where
     }
