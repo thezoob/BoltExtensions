@@ -11,6 +11,9 @@ namespace Lasm.BoltExtensions
     [Widget(typeof(ValueReroute))]
     public sealed class ValueRerouteWidget : UnitWidget<ValueReroute>
     {
+        private static ValueReroute addedUnit = null;
+        private static bool keyPressed;
+
         public ValueRerouteWidget(FlowCanvas canvas, ValueReroute unit) : base(canvas, unit)
         {
         }
@@ -26,8 +29,6 @@ namespace Lasm.BoltExtensions
 
         public override void Update()
         {
-            base.Update();
-
             if (unit.input != null && unit.input.connection != null && unit.input.connection.sourceExists)
             {
                 if (unit.portType != unit.input.connection.source.type)
@@ -47,6 +48,22 @@ namespace Lasm.BoltExtensions
                 lastType = unit.portType;
                 unit.Define();
             }
+
+            if (addedUnit == null && keyPressed && canvas.connectionSource != null && canvas.connectionSource == unit.output)
+            {
+                addedUnit = new ValueReroute();
+                addedUnit.position = canvas.mousePosition - new Vector2(14, 14);
+                ((FlowGraph)graph).units.Add(addedUnit);
+                unit.output.ValidlyConnectTo(addedUnit.input);
+                canvas.connectionSource = addedUnit.output;
+            }
+
+            if (addedUnit != null) canvas.connectionSource = addedUnit.output;
+
+            if (!keyPressed)
+            {
+                addedUnit = null;
+            }
         }
         
         public override void CachePosition()
@@ -58,6 +75,12 @@ namespace Lasm.BoltExtensions
 
             inputs[0].y = _position.y + 5;
             outputs[0].y = _position.y + 5;
+        }
+
+        public override void HandleCapture()
+        {
+            base.HandleCapture();
+            keyPressed = e.keyCode == KeyCode.Space;
         }
     }
 } 
