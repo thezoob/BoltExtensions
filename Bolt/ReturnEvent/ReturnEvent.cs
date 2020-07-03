@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Ludiq;
 using Bolt;
+using System;
 
 namespace Lasm.BoltExtensions
 {
@@ -86,7 +87,7 @@ namespace Lasm.BoltExtensions
         {
             bool should = flow.GetValue<string>(name) == args.name;
 
-            if (arguments.Count + 1 == args.arguments.Length && should)
+            if ((args.isCallback ? arguments.Count == args.arguments.Length : arguments.Count + 1 == args.arguments.Length || (arguments.Count == 0 && args.arguments.Length == 0)) && should)
             {
                 if (args.global)
                 {
@@ -110,7 +111,7 @@ namespace Lasm.BoltExtensions
 
             for (int i = 0; i < arguments.Count; i++)
             {
-                flow.SetValue(arguments[i], args.arguments[i + 1]);
+                flow.SetValue(arguments[i], args.arguments[args.isCallback ? i : i+1]);
             }
         }
 
@@ -125,6 +126,11 @@ namespace Lasm.BoltExtensions
         public static void Trigger(TriggerReturnEvent trigger, GameObject target, string name, bool global = false, params object[] args)
         {
             EventBus.Trigger<ReturnEventArg>("Return", new ReturnEventArg(trigger, target, name, global, args));
+        }
+
+        public static void Trigger(GameObject target, string name, Action<object> callback = null, bool global = false, params object[] args)
+        {
+            EventBus.Trigger<ReturnEventArg>("Return", new ReturnEventArg(callback, target, name, global, args));
         }
     }
 }

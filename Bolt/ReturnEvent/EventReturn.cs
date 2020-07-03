@@ -53,8 +53,15 @@ namespace Lasm.BoltExtensions
         {
             var _data = flow.GetValue<ReturnEventData>(data);
             var val = flow.GetValue(value);
-            _data.args.trigger.storingValue = val;
-            TriggerReturnEvent.Trigger(_data.args);
+            if (_data.args.trigger != null) _data.args.trigger.storingValue = val;
+            if (_data.args.isCallback)
+            {
+                _data.args.callback?.DynamicInvoke(val);
+            }
+            else
+            {
+                TriggerReturnEvent.Trigger(_data.args);
+            }
             return null;
         }
     }
