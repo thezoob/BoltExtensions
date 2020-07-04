@@ -101,12 +101,15 @@ namespace Lasm.BoltExtensions
                 case "Where":
                     operation = QueryOperation.Where;
                     break;
+                default:
+                    operation = QueryOperation.Any;
+                    break;
             }
-        }
+        } 
 
         public void OnBeforeSerialize()
         {
-            serializedOperation = operation.SelectedName(false);
+            serializedOperation = operation.ToString();
         }
 
         protected override void Definition()
