@@ -1,6 +1,5 @@
 <p align="center">
 <img src="http://lifeandstylemedia.com/images/logos/boltextensions.png" alt="bolt extensions logo" title="Bolt Extensions"/>
- </a>
  
 Extensions for Bolt Visual Scripting for the Unity Engine.
 
