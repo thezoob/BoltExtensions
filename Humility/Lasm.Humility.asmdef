@@ -1,11 +1,7 @@
 {
-    "name": "Lasm.BoltExtensions.Humility.Editor",
-    "references": [
-        "GUID:f4131a5c2198b46449b673058d2e7cf3"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "name": "Lasm.Humility",
+    "references": [],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

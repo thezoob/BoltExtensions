@@ -244,7 +244,6 @@ namespace Lasm.BoltExtensions
 #endif
         }
 
-#if ENABLE_INPUT_SYSTEM
         public IEnumerator CheckInput()
         {
             var hasReleased = false;
@@ -380,6 +379,7 @@ namespace Lasm.BoltExtensions
             }
         }
 
+#if ENABLE_INPUT_SYSTEM
         [Obsolete]
         private void Pressed(InputAction.CallbackContext context)
         {
