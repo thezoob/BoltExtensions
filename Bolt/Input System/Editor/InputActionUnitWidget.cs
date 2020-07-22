@@ -1,6 +1,7 @@
 ﻿#if ENABLE_INPUT_SYSTEM
 using Bolt;
 using Ludiq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -13,6 +14,7 @@ namespace Lasm.BoltExtensions
     /// The visuals and visual behaviour of the InputActionUnit.
     /// </summary>
     [Widget(typeof(OnInputActionUnit))]
+    [Obsolete]
     public sealed class OnInputActionUnitWidget : UnitWidget<OnInputActionUnit>
     { 
         string action;

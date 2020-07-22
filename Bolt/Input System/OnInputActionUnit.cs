@@ -17,7 +17,7 @@ namespace Lasm.BoltExtensions
     /// </summary>
     [TypeIcon(typeof(OnButtonInput))]
     [UnitTitle("On Input Action")]
-    [UnitCategory("Events/Input/Input System")]
+    [UnitCategory("Events/Input/Input System")][Obsolete]
     public sealed class OnInputActionUnit : ManualEventUnit<NullInputEventArgs>
     {
         /// <summary>

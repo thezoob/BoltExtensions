@@ -4,10 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace Lasm.BoltExtensions
 {
     [Analyser(typeof(OnInputActionUnit))]
+    [Obsolete]
     public class OnInputActionAnalyser : UnitAnalyser<OnInputActionUnit>
     {
         public OnInputActionAnalyser(GraphReference reference, OnInputActionUnit target) : base(reference, target)
