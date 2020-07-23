@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using Ludiq;
+using Lasm.OdinSerializer;
+using System;
 
 namespace Lasm.BoltExtensions
 {
@@ -13,9 +15,9 @@ namespace Lasm.BoltExtensions
     [UnitTitle("Query")]
     [UnitCategory("Collections")]
     [TypeIcon(typeof(IEnumerable))]
-    public class QueryUnit : Unit, ISerializationCallbackReceiver
+    public class QueryUnit : Unit
     {
-        [UnitHeaderInspectable(null)][InspectorWide]
+        [UnitHeaderInspectable(null)][InspectorWide][Inspectable][OdinSerialize]
         public QueryOperation operation;
 
         /// <summary>
@@ -71,44 +73,9 @@ namespace Lasm.BoltExtensions
         private IEnumerable<object> output;
         private object single;
         private bool outCondition;
-        [SerializeField] private string serializedOperation;
-
-        public void OnAfterDeserialize()
-        {
-            switch (serializedOperation)
-            {
-                case "Any":
-                    operation = QueryOperation.Any;
-                    break;
-                case "AnyWithCondition":
-                    operation = QueryOperation.AnyWithCondition;
-                    break;
-                case "First":
-                    operation = QueryOperation.First;
-                    break;
-                case "FirstOrDefault":
-                    operation = QueryOperation.FirstOrDefault;
-                    break;
-                case "OrderBy":
-                    operation = QueryOperation.OrderBy;
-                    break;
-                case "OrderByDescending":
-                    operation = QueryOperation.OrderByDescending;
-                    break;
-                case "Single":
-                    operation = QueryOperation.Single;
-                    break;
-                case "Where":
-                    operation = QueryOperation.Where;
-                    break;
-            }
-        }
-
-        public void OnBeforeSerialize()
-        {
-            serializedOperation = operation.SelectedName(false);
-        }
-
+        [Obsolete]
+        private string serializedOperation;
+         
         protected override void Definition()
         {
             enter = ControlInput("enter", (flow) =>
@@ -184,6 +151,7 @@ namespace Lasm.BoltExtensions
             }
 
             Succession(enter, exit);
+
             if(showBody) Succession(enter, body);
 
             if (showItem) Assignment(enter, item);
